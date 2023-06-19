@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slay&Play.pl - Serwer społecznościowy gier</title>
+  <style>
+    /* CSS styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+  background-image: url('/assets/pexels-soumil-kumar-735911.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+    
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      z-index: 999;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8); /* Kolor tła paska bocznego */
+      backdrop-filter: blur(5px); /* Efekt rozmycia tła */
+      color: #333;
+    }
+    
+   
+    .header {
+      background-color: #333;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+    .ukryty-tekst {
+      position: relative; /* Ustalamy pozycję jako względem rodzica */
+      display: inline-block; /* Ustalamy element jako blokowy */
+    }
+    
+    .ukryty-tekst:before {
+      content: ""; /* Dodajemy pseudoelement przed tekstem */
+      position: absolute; /* Ustalamy pozycję absolutną */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black; /* Ustalamy czarne tło */
+      opacity: 1; /* Początkowa przezroczystość tła */
+      transition: opacity 0.3s; /* Czas trwania animacji */
+    }
+    
+    .ukryty-tekst:hover:before {
+      opacity: 0; /* Ustawiamy przezroczystość tła na 0 po najechaniu */
+    }
+    .server-name {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: "Arial Black", sans-serif;
+      margin-top: 70px; /* Obniżenie tekstu o 10 pikseli */
+      padding-left: 20px;
+      transition: font-size 0.3s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .server-name:hover {
+      font-size: 28px;
+    }
+
+    .server-icon {
+      font-size: 32px;
+      margin-right: 1
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px 20px;
+    }
+
+    .sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+
+
+    .clock-container {
+      position: fixed;
+      top: 1;
+      bottom: 10px;
+      right: 270px;
+      background-color: rgba(0, 0, 0, 0.534);
+      color: #ffffff;
+      padding: 5px;
+      border-radius: 5px;
+      backdrop-filter: blur(10px); /* Efekt rozmycia tła */
+    }
+    .sidebar ul li i {
+      margin-right: 10px;
+    }
+
+    .sidebar ul li.active {
+      background-color: rgba(255, 255, 255, 0.1); /* Kolor tła aktywnej opcji */
+    }
+
+    #discord-logo {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+#discord-logo:hover {
+  transform: scale(1.1);
+}
+
+#discord-logo:active {
+  transform: scale(1);
+  opacity: 0.8;
+}
+    /* Dodatkowe style dla technicznej podstrony */
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+    .sidebar a:hover {
+  font-size: 20px; /* Zwiększ rozmiar tekstu po najechaniu */
+}
+.sidebar a {
+  font-size: 16px;
+  transition: font-size 0.2s; /* Dodaj płynne przejście */
+}
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .logo img {
+      width: 10px;
+      height: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.1);
+    }
+
+    nav {
+      background-color: #000;
+    }
+
+    nav ul {
+      list-style-type: none;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    #logo {
+  width: 20px; /* Ustaw szerokość logo */
+  transition: transform 0.3s; /* Dodaj płynne przejście dla efektu powiększania */
+}
+
+#logo:hover {
+  transform: scale(1.1); /* Powiększanie logo po najechaniu */
+}
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background-color: #555;
+    }
+
+    section {
+      padding: 40px 20px;
+      width: 60%;
+      background-color: rgba(255, 255, 255, 0.281);
+      margin:70px 0;
+      margin-left: 60px;
+      border-top: 5px solid #000;
+      border-bottom: 5px solid #000;
+      border: 5px solid #000;
+      
+    }
+    section {
+  position: relative;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+section:hover {
+  transform: scale(1.1);
+  filter: brightness(80%);
+}
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    .game-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .game-section img {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .kontakt {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .kontakt img {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+    .społecz {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .społecz img {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .admin-list {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    .admin-list li {
+      margin-bottom: 5px;
+    }
+
+    footer {
+      background-color: #000;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .social-media-icons {
+      list-style-type: none;
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .social-media-icons li {
+      margin: 0 10px;
+    }
+
+    .social-media-icons img {
+      width: 30px;
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-media-icons img:hover {
+      transform: scale(1.1);
+    }
+
+    .clock {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      font-size: 18px;
+    }
+
+ 
+  </style>
+</head>
+<body>
+  <header>
+    <head>
+      <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcDGK8mAAAAAJOS-mY5_FNGJQKUh8440QC36us6"></script>
+      ...
+    </head>
+    
+    <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.enterprise.ready(async () => {
+          const token = await grecaptcha.enterprise.execute('6LcDGK8mAAAAAJOS-mY5_FNGJQKUh8440QC36us6', {action: 'LOGIN'});
+          // IMPORTANT: The 'token' that results from execute is an encrypted response sent by
+          // reCAPTCHA Enterprise to the end user's browser.
+          // This token must be validated by creating an assessment.
+          // See https://cloud.google.com/recaptcha-enterprise/docs/create-assessment
+        });
+      }
+    </script>
+    <a href="https://discord.gg/nzy5gFPT7D" target="_blank">
+      <div id="discord-logo">
+        <img src="image42142.png" alt="Logo Discord" id="logo-image" width="60" height="60" style="border-radius: 50%;">
+      </div>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#dlaczego-my">Dlaczego my?</a></li>
+        <li><a href="#graj-razem">Graj razem</a></li>
+        <li><a href="#boty">Boty</a></li>
+        <li><a href="#rekrutacja">Rekrutacja</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="clock-container">
+    <h2 id="clock"></h2>
+  </div>
+  <div class="header">
+    <i class="fas fa-server server-icon"></i>
+    
+    <h1 class="server-name">✩Slay&Play.pl✩</h1>
+  </div>
+  <section id="dlaczego-my">
+
+    <br><h2>Dlaczego warto do nas dołączyć?</h2>
+    <h3>1. Wspaniała społeczność: Nasza społeczność to miejsce, gdzie gracze o różnych </h3>
+    <h3>zainteresowaniach spotykają się, aby dzielić się pasją do gier. Znajdziesz tutaj </h3>
+    <h3>przyjaznychi entuzjastycznych ludzi gotowych do rozmów, wymiany </h3>
+    <h3>doświadczeń oraz wspólnej rozgrywki.</h3>
+    <br>
+    <br>
+    <h3>2. Wielość gier: Gramy w różnorodne gry, takie jak CS:GO, GTA V, Rainbow Six Siege, </h3>
+    <h3>Minecraft, World of Tanks i wiele innych. Niezależnie od tego, jaka jest Twoja ulubiona gra, </h3>
+    <h3>znajdziesz tutaj towarzystwo, z którym będziesz mógł cieszyć się wspólną rozgrywką </h3>
+    <h3>i rywalizacją.</h1>
+    <br>
+    <br>
+    <h3>3. Wsparcie i pomoc: Nasza społeczność jest zawsze gotowa pomóc nowym graczom.<br> Jeśli masz pytania, problemy techniczne lub szukasz wskazówek, nasi doświadczeni<br> gracze i administracja są gotowi udzielić Ci wsparcia.</h3>
+    <br>
+    <br>
+    <h3>4. Organizowane wydarzenia: Regularnie organizujemy różnego rodzaju wydarzenia, <br>turnieje, konkursy i sesje rozgrywki. Będziesz miał okazję zdobyć nagrody, zagrać z innymi<br> graczami i czerpać radość z rywalizacji.</h3>
+    <br>
+    <br>
+    <h3>5. Boty i narzędzia: Nasz serwer Discord jest wyposażony w różnorodne boty i narzędzia, <br>które ułatwiają zarządzanie serwerem, tworzenie sond, automatyzację aktywności oraz <br>zapewnienie interaktywności w społeczności.</h3>
+  </section>
+  <div class="sidebar">
+    <ul>
+      <br>
+      <br>
+      <li><a href="#"><i class="fas fa-home"></i> </a></li>
+      <li class="active"><a href="#"><i class="fas fa-cogs"></i> Techniczne</a></li>
+      <li><a href="#społecz"><i class="fas fa-users"></i> Społeczność</a></li>
+      <li><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
+    </ul>
+  </div>
+  <br>
+  <section id="społecz">
+    <h2>Nasza Społeczność</h2>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="społecz">
+      <img src="/assets/zeb.png" alt="CS:GO" />
+      <div>
+        <h3>Dedykowane kanały dla różnych gier: </h3>
+        <p>
+          Dzięki naszym dedykowanym kanałom dla poszczególnych gier, możesz łatwo znaleźć graczy, którzy są zainteresowani tym samym tytułem co Ty. Możesz planować rozgrywki, dzielić się wskazówkami i strategiami, a także podziwiać osiągnięcia innych graczy. </p>
+      </div>
+    </div>
+    <div class="społecz">
+      <img src="/assets/drużyna.png" alt="GTA V" />
+      <div>
+        <h3>Społeczność pełna pasjonatów:</h3>
+        <p>Na naszym serwerze znajdziesz wielu graczy, którzy podzielają Twoją pasję do tych popularnych tytułów. Możesz nawiązać nowe znajomości, znaleźć graczy do wspólnej gry i czerpać radość z bycia częścią żywej i aktywnej społeczności. </p>
+      </div>
+    </div>
+    <div class="społecz">
+      <img src="/assets/spec.png" alt="Rainbow Six Siege" />
+      <div>
+        <h3>Wydarzenia i turnieje: </h3>
+        <p>Organizujemy różnego rodzaju wydarzenia i turnieje, w których możesz wziąć udział i rywalizować z innymi graczami. Niezależnie od tego, czy jesteś doświadczonym zawodnikiem czy dopiero zaczynasz swoją przygodę z grami, znajdziesz u nas coś dla siebie. </p>
+      </div>
+    </div>
+    <div class="społecz">
+      <img src="/assets/dzielenie.png" alt="Minecraft" />
+      <div>
+        <h3>Miejsce do dzielenia się:</h3>
+        <p>Na serwerze zapewniamy przestrzeń, w której możesz dzielić się swoimi wrażeniami, pytania i pomysłami dotyczącymi gier. Możesz podzielić się ciekawymi materiałami, takimi jak nagrania z rozgrywek, poradniki czy swoje osiągnięcia. Nasza społeczność z pewnością doceni Twoje zaangażowanie! </p>
+      </div>
+    </div>
+    <div class="społecz">
+      <img src="/assets/atmo.png" alt="World of Tanks" />
+      <div>
+        <h3>Przyjazna atmosfera:</h3>
+        <p>Stawiamy na przyjazną i otwartą atmosferę, w której każdy czuje się mile widziany. Dbamy o to, aby wszyscy członkowie społeczności traktowali się z szacunkiem i wspierali się nawzajem. Wierzymy, że wspólna pasja do gier może jednoczyć ludzi i tworzyć niesamowite relacje. </p>
+      </div>
+
+      
+      
+    </div>
+  
+  </section>
+
+  <section id="graj-razem">
+    <br>
+    <br>
+    <h2>Graj razem</h2>
+    <div class="game-section">
+      <img src="/assets/csgo.png" alt="CS:GO" />
+      <div>
+        <h3>CS:GO</h3>
+        <p>Nasz serwer jest pełen pasjonatów CS:GO, którzy dzielą swoją wiedzą, umiejętnościami i entuzjazmem. Niezależnie od tego, czy jesteś nowicjuszem, doświadczonym graczem czy prawdziwym profesjonalistą, znajdziesz tutaj miejsce dla siebie.
+
+          Zapewniamy przyjazne i zgrane środowisko, w którym możesz nawiązać nowe znajomości, znaleźć partnerów do gry, trenować swoje umiejętności i uczestniczyć w różnorodnych turniejach i wydarzeniach. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/gtav.png" alt="GTA V" />
+      <div>
+        <h3>GTA V</h3>
+        <p>Przygotuj się na niesamowitą przygodę w olśniewającym świecie Los Santos, gdzie możliwości są niemal nieograniczone. Na naszym serwerze GTAV czekają na Ciebie niezapomniane chwile pełne akcji, luksusowych samochodów, nielegalnych rajdów ulicami miasta i niezliczonych innych możliwości.
+
+          Dołączając do naszej społeczności, stajesz się częścią ekipy pełnej pasjonatów GTAV. Bez względu na to, czy preferujesz wcielanie się w postać bezwzględnego przestępcy czy walczenie o dominację na ulicach jako członek gangu, nasz serwer zapewnia miejsce, w którym możesz spełniać swoje najskrytsze marzenia. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/rainbowsix.png" alt="Rainbow Six Siege" />
+      <div>
+        <h3>Rainbow Six Siege</h3>
+        <p>Na naszym serwerze społecznościowym Rainbow Six Siege czekają na Ciebie niezapomniane starcia, które będą testem Twojej zręczności, szybkości myślenia i umiejętności taktycznych. Wspólnie z innymi graczami możesz planować skomplikowane strategie, koordynować ataki i obrony oraz tworzyć niepowtarzalne momenty, które zaważą na wyniku starcia.
+
+          Dołączając do naszej społeczności, odkryjesz nie tylko emocjonującą rozgrywkę, ale także miejsce, gdzie możesz rozwijać swoje umiejętności, dzielić się wiedzą, a także poznawać nowych ludzi z pasją do Rainbow Six Siege.
+          
+          Nie ważne, czy preferujesz rolę tajnego snajpera, specjalisty od wysadzania drzwi, czy eksperta od rozbrajania bomb - nasz serwer daje Ci możliwość znalezienia swojej drogi w świecie Rainbow Six Siege. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/minecraft.png" alt="Minecraft" />
+      <div>
+        <h3>Minecraft</h3>
+        <p>Dołączając do naszej społeczności Minecraft, otwierasz drzwi do niekończących się przygód i możliwości. Niezależnie od tego, czy preferujesz budowę ogromnych zamków, tworzenie skomplikowanych układów redstone, czy wyprawy na poszukiwanie skarbów, nasz serwer oferuje Ci miejsce, gdzie możesz realizować swoje kreatywne wizje i dzielić się nimi z innymi.
+
+          Przyjdź do naszego serwera społecznościowego Minecraft i odkryj prawdziwą magię tworzenia. Dołącz do naszej przyjaznej społeczności, zdobywaj doświadczenie, rozwijaj swoje umiejętności budowlane i eksploracyjne. Czekają na Ciebie niezapomniane chwile, radość tworzenia i przyjaźń z innymi graczami, którzy podzielają Twoją pasję do Minecraft. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/worldoftanks.png" alt="World of Tanks" />
+      <div>
+        <h3>World of Tanks</h3>
+        <p>Na naszym serwerze społecznościowym World of Tanks czeka na Ciebie nie tylko niezapomniana rozgrywka, ale także społeczność pełna pasjonatów tej wspaniałej gry. Dołącz do nas i spotkaj się z innymi miłośnikami czołgów, dzielącymi Twoje zainteresowania. Podziel się swoimi doświadczeniami, zdobądź nowe znajomości, a nawet stwórz własną drużynę, która będzie dominować na polu bitwy.
+
+          Rozwijaj swoje umiejętności taktyczne i techniczne, odkrywaj różnorodne czołgi, zdobywaj doświadczenie i awansuj na wyższe stopnie. Czekają na Ciebie nie tylko epickie bitwy, ale także możliwość personalizacji i ulepszania swoich pojazdów, co pozwoli Ci stworzyć unikalny i niepowtarzalny styl gry.
+          
+          Dołącz do naszego serwera społecznościowego World of Tanks i doświadcz niezrównanej atmosfery bitewnej. Poznaj nowych ludzi, zacieśniaj więzi, rywalizuj w turniejach i wydarzeniach, które sprawią, że twoje serce będzie bić mocniej. </p>
+      </div>
+
+      
+      
+    </div>
+  </section>
+
+  <section id="boty">
+    <h2>Boty</h2>
+    <br>
+    <br>
+    <br>
+    <p>Tutaj znajduje się 5 najważniejszych botów na naszym serwerze</p>
+    <br>
+    <div class="game-section">
+      <img src="/assets/carl.png" alt="CS:GO" />
+      <div>
+        <h3>Carl-bot</h3>
+        <p>
+          Carl-bot to bot na platformie Discord, który jest popularny wśród administratorów serwerów ze względu na swoje różnorodne funkcje. Bot ten oferuje narzędzia do zarządzania, moderacji i automatyzacji na serwerze, które pomagają utrzymać porządek i zapewnić wygodne doświadczenie dla członków społeczności. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/mee.png" alt="GTA V" />
+      <div>
+        <h3>MEE6</h3>
+        <p>Mee6 to popularny bot na platformie Discord, który jest szeroko wykorzystywany przez społeczności serwerów do zarządzania i moderacji. Bot ten oferuje wiele funkcji, które pomagają administratorom serwerów w automatyzacji różnych zadań i poprawie interakcji z członkami społeczności. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/janusz.png" alt="Rainbow Six Siege" />
+      <div>
+        <h3>Janusz </h3>
+        <p>Janusz powiadomi Cię o darmowych grach, wyprzedażach i zniżkach na PC, konsole. Wspiera wyszukiwanie tytułów gier na Steamie, GG.deals i nie tylko.
+
+          Bot obsługuje w pełni slash commands (polecenia z ukośnikiem), po wpisaniu w pole tekstowe / wyświetlą się również poniższe komendy wraz z opisami. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/start.png" alt="Minecraft" />
+      <div>
+        <h3>StartIT</h3>
+        <p>StartIt to mniej popularny bot na platformie Discord, który jest szeroko wykorzystywany przez społeczności serwerów do zarządzania i moderacji. Bot ten oferuje wiele funkcji, które pomagają administratorom serwerów w automatyzacji różnych zadań i poprawie interakcji z członkami społeczności. </p>
+      </div>
+    </div>
+    <div class="game-section">
+      <img src="/assets/green.png" alt="World of Tanks" />
+      <div>
+        <h3>Green-bot</h3>
+        <p>W dziedzinie rozrywki Green-Bot ma wiele do zaoferowania. Bot posiada funkcje takie jak muzyka, memy, wyszukiwanie obrazów i wiele innych, które mogą zapewnić członkom serwera rozrywkę i interakcję. Możliwość odtwarzania muzyki z platform takich jak YouTube czy SoundCloud oraz możliwość wyszukiwania i wyświetlania memów z popularnych źródeł sprawiają, że Green-Bot staje się atrakcyjnym dodatkiem dla społeczności Discord. </p>
+      </div>
+
+      
+      
+    </div>
+  
+  </section>
+
+  <section id="rekrutacja">
+    <br>
+    <br>
+    <h2>Rekrutacja (narazie off)</h2>
+    <ul>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdy3I4xbT8IrqSrVlVTAYVPbv8-KzH4f_N1dDE4BZ5mXqLoCw/viewform">Moderator</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeKSueJqHu28xIn5a_lSdt5AbIK-zF_5gAUiCxMHEMURnVmtA/viewform">Technik</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeuN6StplmI20fILwWTeHEb0fRj-OuhY2Mw_83ltt5_aogc1g/viewform">Support</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSehWaZsgnugL5v4xX_QXgTU0uioz6CFsY1K1cBA0k2GTfOsZA/viewform">Developer</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScVEyPj8uEBUaLj6BpgiaTv4jZRqk6rADalUbbPPb1GBrs6qg/viewform">Organizator eventów</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScJuQdkoe5CCVP8gVeoEf_eMGeBrXGdmHqBzJCmQmMLwemeQA/viewform">Ticket Support</a></li>
+      <br>
+      <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdRmwQUUJeOGQIUDOJpwpTBm7twR0HY6LUiv5BDkGe4DByz7w/viewform">Realizator partnerstw</a></li>
+    </ul>
+  </section>
+
+  <section id="Kontakt">
+    <h2>Kontakt</h2>
+    <br>
+    <div class="kontakt">
+      <img src="/assets/gmail.png" alt="CS:GO" />
+      <div>
+        <h3>Adress email</h3>
+        <div class="ukryty-tekst">
+          <p>slayandplay1@gmail.com</p>
+        </div>
+      </div>
+    </div>
+    <div class="kontakt">
+      <img src="/assets/dsc.png" alt="GTA V" />
+      <div>
+        <h3>Discord</h3>
+        <div class="ukryty-tekst">
+          <p>Kontakt: _smyurfik</p>
+        </div>
+      </div>
+    </div>
+
+
+      
+      
+    </div>
+  
+  </section>
+  <footer>
+    <ul class="social-media-icons">
+      <li><a href="https://www.youtube.com"><img src="/assets/youtube.png" alt="YouTube" /></a></li>
+      <li><a href="https://discord.gg/nzy5gFPT7D"><img src="/assets/discord.png" alt="Discord" /></a></li>
+      <li><a href="https://www.twitch.tv"><img src="/assets/twitch.png" alt="Twitch" /></a></li>
+      <li><a href="https://www.facebook.com"><img src="/assets/facebook.png" alt="Facebook" /></a></li>
+      <li><a href="https://steamcommunity.com/groups/SlayPlaypl"><img src="/assets/steam.png" alt="Steam" /></a></li>
+    </ul>
+  </footer>
+
+  <div class="clock">
+    <span id="clock"></span>
+  </div>
+
+  <script>
+    // JavaScript code
+    function updateTime() {
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var date = now.toLocaleDateString();
+
+      var clockElement = document.getElementById('clock');
+      clockElement.textContent = hours + ':' + addLeadingZero(minutes) + ':' + addLeadingZero(seconds) + ' ' + date;
+
+      setTimeout(updateTime, 1000); // Aktualizacja co sekundę
+    }
+
+    function addLeadingZero(number) {
+      return (number < 10) ? '0' + number : number;
+    }
+
+    updateTime();
+        window.onload = function() {
+      updateTime();
+    };
+
+  </script>
+</body>
+</html>

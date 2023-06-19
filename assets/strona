@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slay and play</title>
+  <style>
+    /* Tutaj możesz dodać style CSS dla swojej strony */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    nav {
+      background-color: #f4f4f4;
+      padding: 10px;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    section {
+      padding: 20px;
+      margin: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Moja Profesjonalna Strona</h1>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="#">Strona główna</a></li>
+      <li><a href="#">O mnie</a></li>
+      <li><a href="#">Usługi</a></li>
+      <li><a href="#">Kontakt</a></li>
+    </ul>
+  </nav>
+  
+  <section>
+    <h2>Witaj na mojej stronie!</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus auctor, condimentum lorem sed, posuere elit. Nulla facilisi. Mauris tincidunt hendrerit odio, eu iaculis ipsum lacinia eu. Aliquam cursus dui in finibus porta. Nulla facilisi. Curabitur fermentum ipsum eget fringilla viverra. Pellentesque sed odio auctor, semper dui sed, tempus massa. Aenean rhoncus tincidunt tellus at sollicitudin.</p>
+  </section>
+  
+  <footer>
+    &copy; 2023 Moja Profesjonalna Strona. Wszelkie prawa zastrzeżone.
+  </footer>
+</body>
+</html>
